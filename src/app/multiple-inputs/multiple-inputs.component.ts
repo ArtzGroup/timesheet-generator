@@ -94,10 +94,12 @@ export class MultipleInputsComponent implements OnInit {
 
           this.calculatedArrayElement = Object.assign({}, this.calculatedArray[i]);
           this.hoursInput = this.calculatedArrayElement.hoursInput / 8;
+          this.calculatedArrayElement.hours = [];
           this.calculatedArrayElement.item = [];
           this.calculatedArrayElement.datesArray = [];
 
           for (let j = 0; j <= this.hoursInput - 1; j++) {
+            this.calculatedArrayElement.hours.push(8);
             this.calculatedArrayElement.item.push(this.hoursInput)
             this.calculatedArrayElement.datesArray.push(this.dateArray[this.currentIndex]);
             this.currentIndex++
@@ -114,11 +116,18 @@ export class MultipleInputsComponent implements OnInit {
             for (let i = 0 + z; i <= this.calculatedArray.length - 1; i++) {
               this.calculatedArrayElement = Object.assign({}, this.calculatedArray[i]);
               this.hoursInput = this.calculatedArrayElement.hoursInput / 8;
+              this.calculatedArrayElement.hours = [];
               this.calculatedArrayElement.item = [];
               this.calculatedArrayElement.datesArray = [];
 
               for (let j = 0; j < this.hoursInput + 0.5; j++) {
-                this.calculatedArrayElement.item.push(this.hoursInput)
+                // this.calculatedArrayElement.hours.push(8)
+                if (j == this.hoursInput + 0.5 - 1) {
+                  this.calculatedArrayElement.hours.push(4);
+                } else {
+                  this.calculatedArrayElement.hours.push(8);
+                }
+                this.calculatedArrayElement.item.push(8)
                 this.calculatedArrayElement.datesArray.push(this.dateArray[this.currentIndex]);
                 this.currentIndex++
               }

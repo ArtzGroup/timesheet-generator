@@ -14,11 +14,11 @@
                     <th>Project Codes</th>
                 </tr>
             </thead>
-            <tbody class="tbody" *ngFor="let value of array; let i = index">
-                <tr *ngFor="let item of array[i].item; let dateValue of array[i].datesArray">
-                    <td>8</td>
-                    <td>{{dateValue}}</td>
-                    <td>{{value.projectCodeInput}}</td>
+            <tbody class="tbody" *ngFor="let element of array">
+                <tr *ngFor="let item of element.item; let i=index; let f=first;">
+                    <td>{{element.hours[i]}}</td>
+                    <td>{{element.datesArray[i]}}</td>
+                    <td *ngIf="f" [attr.rowspan]="element.item.length">{{element.projectCodeInput}}</td>
                 </tr>
             </tbody>
         </table>
