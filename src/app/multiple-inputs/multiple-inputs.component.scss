@@ -125,3 +125,23 @@ select.sel-dark {
 select.sel-dark:active {
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHBvbHlnb24gZmlsbD0id2hpdGUiIG9wYWNpdHk9Ii41IiBwb2ludHM9IjAsNCAxNiw0IDgsMTIiLz48L3N2Zz4=');
 }
+
+
+.formInputWidth {
+  max-width: 40%;
+  flex: 0 0 40%;
+}
+
+
+@media screen and(max-width:767px) {
+
+  .formInput {
+    display: flex;
+    flex-direction: column;
+
+    .formInputWidth {
+      max-width: 50%;
+      flex: 0 0 50%;
+    }
+  }
+}

@@ -26,8 +26,8 @@
                 <div *ngFor="let ticket of t.controls; let i = index" class="list-group list-group-flush">
                     <div class="list-group-item">
                         <h5 class="card-title">Project {{i + 1}}</h5>
-                        <div [formGroup]="ticket" class="form-row">
-                            <div class="form-group col-6">
+                        <div [formGroup]="ticket" class="form-row formInput">
+                            <div class="form-group col-6 formInputWidth">
                                 <label>Please enter project {{i+1}} hours</label>
                                 <input type="number" formControlName="hoursInput" class="form-control"
                                     [ngClass]="{ 'is-invalid': submitted && ticket.controls.hoursInput.errors }" />
@@ -86,6 +86,5 @@
     </div>
 </div>
 
-<app-entry-form *ngIf="popup"></app-entry-form>
 
 <!-- <p class="bottomDetailDesc">Your total hours for the month of <strong>{{monthName}}, {{year}}</strong> is {{sum}}</p> -->
