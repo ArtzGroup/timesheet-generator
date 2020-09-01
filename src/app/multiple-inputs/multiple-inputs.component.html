@@ -1,75 +1,91 @@
-<div class="col-lg-12 table-responsive" #TABLE #table>
-    <div style="padding-bottom: 10px;padding-top: 10px;">
-        <div class="row">
-            <div class="col-sm-12">
-                <button (click)="ExportTOExcel()" class="btn btn-success">ExportTOExcel</button> </div>
-        </div>
+<p>*Considering 8 hours per day, current month <strong>{{monthName}}, {{year}}</strong> has {{currentWorkingDays}}
+    weekdays which
+    equals to {{currentMonthHours}} hours.</p>
+<div class="wrapper">
+
+    <!-- <app-entry-form class="entryForm"></app-entry-form> -->
+    <div class="entryForm">
+        <form [formGroup]="timeSheetForm" (ngSubmit)="onSubmit()">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="select">
+                            <label>Please select number of projects you worked on:</label>
+                            <select class="sel-dark" name="slct" id="slct" formControlName="numberOfTickets"
+                                (change)="onChangeTickets($event)"
+                                [ngClass]="{ 'is-invalid': submitted && f.numberOfTickets.errors }">
+                                <option selected>Choose an option</option>
+                                <option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]">{{i}}</option>
+                            </select>
+                            <div *ngIf="submitted && f.numberOfTickets.errors" class="invalid-feedback">
+                                <div *ngIf="f.numberOfTickets.errors.required">Number of projects is required</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngFor="let ticket of t.controls; let i = index" class="list-group list-group-flush">
+                    <div class="list-group-item">
+                        <h5 class="card-title">Project {{i + 1}}</h5>
+                        <div [formGroup]="ticket" class="form-row">
+                            <div class="form-group col-6">
+                                <label>Please enter project {{i+1}} hours</label>
+                                <input type="number" formControlName="hoursInput" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && ticket.controls.hoursInput.errors }" />
+                                <div *ngIf="submitted && ticket.controls.hoursInput.errors" class="invalid-feedback">
+                                    <div *ngIf="ticket.controls.hoursInput.errors.required">Hours is required</div>
+                                </div>
+                            </div>
+                            <div class="form-group col-6">
+                                <label>Please enter project {{i+1}} project Code</label>
+                                <input type="text" formControlName="projectCodeInput" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && ticket.controls.projectCodeInput.errors }" />
+                                <div *ngIf="submitted && ticket.controls.projectCodeInput.errors"
+                                    class="invalid-feedback">
+                                    <div *ngIf="ticket.controls.projectCodeInput.errors.required">Project Code is
+                                        required</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-primary mr-1 submitButton">Submit</button>
+                    <button class="btn btn-secondary mr-1" type="reset" (click)="onReset()">Reset</button>
+                    <button class="btn btn-secondary mr-1" type="button" (click)="onClear()">Clear</button>
+                    <button *ngIf="showButton" (click)="ExportTOExcel()" class="btn btn-success excelButton">Export TO
+                        Excel</button>
+                </div>
+            </div>
+        </form>
     </div>
-    <div *ngIf="array">
+
+    <div class="col-lg-12 table-responsive displayTable" #TABLE #table>
         <table class="table table-bordered">
             <thead class="thead-dark">
                 <tr>
                     <th>Hours</th>
                     <th>Dates</th>
                     <th>Project Codes</th>
+                    <th>Grouped Codes</th>
                 </tr>
             </thead>
             <tbody class="tbody" *ngFor="let element of array">
                 <tr *ngFor="let item of element.item; let i=index; let f=first;">
                     <td>{{element.hours[i]}}</td>
                     <td>{{element.datesArray[i]}}</td>
+                    <td>{{element.projectCodeInput}}</td>
                     <td *ngIf="f" [attr.rowspan]="element.item.length">{{element.projectCodeInput}}</td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="!showButton">
+                <tr>
+                    <td [attr.rowspan]="4">Nothing to display yet</td>
                 </tr>
             </tbody>
         </table>
     </div>
-    <form [formGroup]="timeSheetForm" (ngSubmit)="onSubmit()">
-        <div class="card m-3">
-            <div class="card-body">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Number of Project Codes</label>
-                        <select formControlName="numberOfTickets" class="form-control"
-                            (change)="onChangeTickets($event)"
-                            [ngClass]="{ 'is-invalid': submitted && f.numberOfTickets.errors }">
-                            <option value=""></option>
-                            <option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]">{{i}}</option>
-                        </select>
-                        <div *ngIf="submitted && f.numberOfTickets.errors" class="invalid-feedback">
-                            <div *ngIf="f.numberOfTickets.errors.required">Number of projects is required</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div *ngFor="let ticket of t.controls; let i = index" class="list-group list-group-flush">
-                <div class="list-group-item">
-                    <h5 class="card-title">Project {{i + 1}}</h5>
-                    <div [formGroup]="ticket" class="form-row">
-                        <div class="form-group col-6">
-                            <label>Enter Hours</label>
-                            <input type="number" formControlName="hoursInput" class="form-control"
-                                [ngClass]="{ 'is-invalid': submitted && ticket.controls.hoursInput.errors }" />
-                            <div *ngIf="submitted && ticket.controls.hoursInput.errors" class="invalid-feedback">
-                                <div *ngIf="ticket.controls.hoursInput.errors.required">Hours is required</div>
-                            </div>
-                        </div>
-                        <div class="form-group col-6">
-                            <label>Enter Project Code</label>
-                            <input type="number" formControlName="projectCodeInput" class="form-control"
-                                [ngClass]="{ 'is-invalid': submitted && ticket.controls.projectCodeInput.errors }" />
-                            <div *ngIf="submitted && ticket.controls.projectCodeInput.errors" class="invalid-feedback">
-                                <div *ngIf="ticket.controls.projectCodeInput.errors.required">Email is required</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card-footer text-center">
-                <button class="btn btn-primary mr-1">Submit</button>
-                <button class="btn btn-secondary mr-1" type="reset" (click)="onReset()">Reset</button>
-                <button class="btn btn-secondary" type="button" (click)="onClear()">Clear</button>
-            </div>
-        </div>
-    </form>
-
 </div>
+
+<app-entry-form *ngIf="popup"></app-entry-form>
+
+<!-- <p class="bottomDetailDesc">Your total hours for the month of <strong>{{monthName}}, {{year}}</strong> is {{sum}}</p> -->

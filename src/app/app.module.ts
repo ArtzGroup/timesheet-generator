@@ -7,18 +7,23 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MultipleInputsComponent } from './multiple-inputs/multiple-inputs.component';
 import { SingleInputComponent } from './single-input/single-input.component';
-
+import { EntryFormComponent } from './entry-form/entry-form.component';
+import { MatSelectModule } from '@angular/material/select';
+import { DescriptionComponent } from './description/description.component';
 @NgModule({
   declarations: [
     AppComponent,
     MultipleInputsComponent,
-    SingleInputComponent
+    SingleInputComponent,
+    EntryFormComponent,
+    DescriptionComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]
