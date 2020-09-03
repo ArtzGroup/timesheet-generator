@@ -7,6 +7,14 @@ header {
   min-height: 50px;
   padding: 10px;
   z-index: 9999;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  p {
+    margin: 0 20px;
+    color: #ffffff;
+  }
 }
 
 h1 {
@@ -37,4 +45,11 @@ div {
     font-size: 22px;
     font-weight: 500;
   }
+}
+
+
+.amar {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
 }
