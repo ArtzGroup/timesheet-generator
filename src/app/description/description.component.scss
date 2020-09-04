@@ -53,3 +53,14 @@ div {
   bottom: 20px;
   right: 20px;
 }
+
+@media screen and (max-width: 767px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+
+    p {
+      margin: 5px 0;
+    }
+  }
+}

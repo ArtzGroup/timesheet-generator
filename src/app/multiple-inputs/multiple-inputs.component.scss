@@ -66,6 +66,10 @@ table {
       width: 100%;
     }
   }
+
+  .excelButton {
+    margin-top: 20px;
+  }
 }
 
 
@@ -132,6 +136,39 @@ select.sel-dark:active {
   flex: 0 0 40%;
 }
 
+.calcLink {
+  color: #0a437d;
+  text-decoration: underline;
+  cursor: pointer;
+
+  &:hover {
+    color: #fc0;
+  }
+}
+
+.calculator {
+  position: fixed;
+  top: 25%;
+  right: 0;
+  width: 0;
+  transition: all 0.5s linear;
+
+  &.open {
+    width: 300px;
+    transition: all 0.5s linear;
+  }
+
+  button {
+    position: absolute;
+    top: 6px;
+    left: -2px;
+    background: #080808;
+    border-radius: 100px;
+    width: 24px;
+    height: 24px;
+    color: #fff;
+  }
+}
 
 @media screen and(max-width:767px) {
 

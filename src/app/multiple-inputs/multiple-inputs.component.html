@@ -1,6 +1,7 @@
 <p>*Considering 8 hours per day, current month <strong>{{monthName}}, {{year}}</strong> has {{currentWorkingDays}}
-    weekdays which
-    equals to {{currentMonthHours}} hours.</p>
+    working which
+    equals to {{currentMonthHours}} hours. Need a <a class="calcLink" (click)="showCalculator()">Calculator?</a>
+</p>
 <div class="wrapper">
 
     <!-- <app-entry-form class="entryForm"></app-entry-form> -->
@@ -77,7 +78,15 @@
                     <td *ngIf="f" [attr.rowspan]="element.item.length">{{element.projectCodeInput}}</td>
                 </tr>
             </tbody>
-            <tbody *ngIf="!showButton">
+            <tbody>
+                <tr *ngFor="let holiday of holidayDateArray; let i=index; let f=first;">
+                    <td>8</td>
+                    <td>{{holiday}}</td>
+                    <td>2500.501010.001</td>
+                    <td *ngIf="f" [attr.rowspan]="holidayDateArray.length">Statutory Holidays</td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="emptyTable">
                 <tr>
                     <td [attr.rowspan]="4">Nothing to display yet</td>
                 </tr>
@@ -85,6 +94,16 @@
         </table>
     </div>
 </div>
+
+<div class="calculator" [ngClass]="{'open': showCalc}">
+    <button (click)="hidecalculator()" type="button" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <iframe src='https://www.embed.com/app/calculator/gray-calculator.html' style='width: 300px; height: 400px;'
+        scrolling='no' frameBorder='0'></iframe>
+</div>
+
+
 
 
 <!-- <p class="bottomDetailDesc">Your total hours for the month of <strong>{{monthName}}, {{year}}</strong> is {{sum}}</p> -->

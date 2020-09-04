@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { FormControl, FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
-import * as moment from 'moment';
+// import * as moment from 'moment';
+import * as moment from 'moment-business-days';
 
 @Component({
   selector: 'app-multiple-inputs',
@@ -25,6 +26,7 @@ export class MultipleInputsComponent implements OnInit {
   values: any = [];
   array: any = [];
   dateArray: any = [];
+  holidayDateArray: any = [];
 
 
   d = new Date();
@@ -45,11 +47,44 @@ export class MultipleInputsComponent implements OnInit {
   sum: number;
   currentWorkingDays: number;
   currentMonthHours: number;
-  popup: boolean = false;
+  showCalc: boolean = false;
+  emptyTable: boolean = false;
 
   constructor(private formBuilder: FormBuilder) { }
 
+  jan1st = '01-01-' + this.year.toString();
+  familyDay = '02-17-2020';
+  goodFriday = '04-10-2020';
+  victoriaDay = '05-18-2020';
+  canadaDay = '07-01-' + this.year.toString();
+  simcoeDay = '08-03-2020';
+  laborDay = '09-07-' + this.year.toString();
+  thanksGiving = '10-12-2020';
+  christmas = '12-25-2020';
+  boxingDay = '12-26-2020';
+
+  familyDay21 = '02-15-2021';
+  goodFriday21 = '04-02-2021';
+  victoriaDay21 = '05-24-2021';
+  simcoeDay21 = '08-02-2021';
+  laborDay21 = '09-06-2021';
+  thanksGiving21 = '10-11-2021';
+  christmas21 = '12-27-2021';
+  boxingDay21 = '12-28-2021';
+
+
   ngOnInit() {
+    moment.updateLocale('us', {
+      holidays: [this.jan1st, this.familyDay,
+      this.goodFriday, this.victoriaDay, this.canadaDay,
+      this.simcoeDay, this.laborDay, this.thanksGiving,
+      this.christmas, this.boxingDay,
+      this.familyDay21, this.goodFriday21, this.victoriaDay21,
+      this.simcoeDay21, this.laborDay21, this.thanksGiving21,
+      this.christmas21, this.boxingDay21],
+      holidayFormat: 'MM-DD-YYYY'
+    });
+    console.log(moment(this.now).isHoliday())
     this.monthName = moment().startOf("months").format('MMM');
     this.getdate();
     this.currentWorkingDays = this.dateArray.length;
@@ -89,11 +124,13 @@ export class MultipleInputsComponent implements OnInit {
 
     XLSX.utils.book_append_sheet(wb, ws, this.monthName + this.year);
     XLSX.writeFile(wb, this.monthName + 'TimeSheet.xlsx');
+
+    // this.onReset();
   }
 
   onSubmit() {
     this.error = "";
-    this.getdate();
+    // this.getdate();
     this.submitted = true;
     this.numberOfTickets = this.timeSheetForm.value.numberOfTickets;
 
@@ -107,7 +144,7 @@ export class MultipleInputsComponent implements OnInit {
     for (let z = 0; z <= this.timeSheetForm.value.numberOfTickets - 1; z++) {
       this.str = String(this.timeSheetForm.value.tickets[z].hoursInput / 8);
       this.values.push(this.str);
-      if (this.timeSheetForm.value.tickets[z].hoursInput % 8 == 0 || this.timeSheetForm.value.tickets[z].hoursInput % 7.5 == 0) {
+      if (this.timeSheetForm.value.tickets[z].hoursInput <= this.currentMonthHours && (this.timeSheetForm.value.tickets[z].hoursInput % 8 == 0 || this.timeSheetForm.value.tickets[z].hoursInput % 7.5 == 0)) {
         this.showButton = true;
         this.calculatedArray.push(this.timeSheetForm.value.tickets[z]);
 
@@ -131,9 +168,14 @@ export class MultipleInputsComponent implements OnInit {
             }
             this.calculatedArrayElement.item.push(this.hoursInput)
             this.calculatedArrayElement.datesArray.push(this.dateArray[this.currentIndex]);
+            console.log(this.calculatedArrayElement)
             this.currentIndex++
           }
           this.array[i] = this.calculatedArrayElement;
+          // this.array[i].holidayArray = [];
+          // this.array[i].holidayArray.push(this.holidayDateArray[i]);
+          // for (let h = i; h <= this.holidayDateArray.length - 1; h++) {
+          // }
           // this.sum = this.array[i].hours.reduce(function (a, b) {
           //   return a + b;
           // }, 0);
@@ -184,7 +226,7 @@ export class MultipleInputsComponent implements OnInit {
     // reset whole form back to initial state
     this.submitted = false;
     this.showButton = false;
-    this, this.calculatedArray = [];
+    this.calculatedArray = [];
     this.array = [];
     this.values = [];
     this.timeSheetForm.reset();
@@ -205,13 +247,28 @@ export class MultipleInputsComponent implements OnInit {
       this.dateStr1 = this.month + '/' + i + '/' + this.year;
       this.myMoment = moment(this.dateStr1);
       if (this.myMoment.weekday() == 6 || this.myMoment.weekday() == 0) {
-        // console.log(this.dateStr1=this.month+'/'+i+'/'+this.year)
+        // console.log(this.dateStr1 = this.month + '/' + i + '/' + this.year)
+
+      } else if (moment(this.dateStr1).isHoliday()) {
+        this.holidayDateArray.push(this.dateStr1);
+        this.emptyTable = true;
+        // this.holidayDateArray.push("9/4/2020", "9/8/2020", "9/9/2020")
+        console.log(this.holidayDateArray)
       } else {
         this.dateArray.push(this.dateStr1)
+        this.emptyTable = false;
         // console.log(this.dateArray)
 
       }
     }
+  }
+
+  showCalculator() {
+    this.showCalc = true;
+  }
+
+  hidecalculator() {
+    this.showCalc = false;
   }
 
 }
