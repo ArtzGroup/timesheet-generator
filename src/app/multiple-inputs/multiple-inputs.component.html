@@ -53,11 +53,11 @@
                     <button class="btn btn-primary mr-1 submitButton">Submit</button>
                     <button class="btn btn-secondary mr-1" type="reset" (click)="onReset()">Reset</button>
                     <button class="btn btn-secondary mr-1" type="button" (click)="onClear()">Clear</button>
-                    <button *ngIf="showButton" (click)="ExportTOExcel()" class="btn btn-success excelButton">Export TO
-                        Excel</button>
                 </div>
             </div>
         </form>
+        <button *ngIf="showButton" (click)="ExportTOExcel()" class="btn btn-success excelButton">Export TO
+            Excel</button>
     </div>
 
     <div class="col-lg-12 table-responsive displayTable" #TABLE #table>
