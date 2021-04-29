@@ -130,6 +130,7 @@ export class MultipleInputsComponent implements OnInit {
 
   onSubmit() {
     this.error = "";
+    this.currentIndex = 0;
     // this.getdate();
     this.submitted = true;
     this.numberOfTickets = this.timeSheetForm.value.numberOfTickets;
@@ -232,6 +233,7 @@ export class MultipleInputsComponent implements OnInit {
     this.timeSheetForm.reset();
     this.t.clear();
     this.error = "";
+    this.currentIndex = 0;
   }
 
   onClear() {
